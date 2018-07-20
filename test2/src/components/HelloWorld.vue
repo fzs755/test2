@@ -5,8 +5,17 @@
       <input type="text" name="userName" v-model="username"> <br>
       <input type="text" name="age" v-model="age"> <br>
       <a href="javascript:;" @click="addUser">提交</a>
+      <p></p>
       <input type="text" name="userName" v-model="username1"> <br>
-      <a href="javascript:;" @click="delUser">删除</a>
+      <input type="text" name="age" v-model="age1"> <br>
+      <a href="javascript:;" @click="changeUser">修改密码</a>
+      <p></p>
+      <input type="text" name="userName" v-model="username2"> <br>
+      <input type="text" name="age" v-model="age2"> <br>
+      <a href="javascript:;" @click="delUser">删除用户</a>
+      <p></p>
+      <input type="text" name="userName" v-model="username3"> <br>
+      <a href="javascript:;" @click="compareUser">确认</a>
     </form>
   </div>
 </template>
@@ -18,7 +27,10 @@ export default {
       msg: 'Welcome to Your Vue.js App',
       username: '',
       username1: '',
-      age: ''
+      username2: '',
+      username3: '',
+      age: '',
+      age1: ''
     }
   },
   methods: {
@@ -32,9 +44,32 @@ export default {
         console.log(response)
       })
     },
+    changeUser () {
+      var name1 = this.username1
+      var age1 = this.age1
+      this.$http.post('api/user/changeUser', {
+        username1: name1,
+        age1: age1
+      }, {}).then((response) => {
+        console.log(response)
+      })
+    },
     delUser () {
-      var name = this.username1
-      this.$http.delete()
+      var name2 = this.username2
+      var age2 = this.age2
+      this.$http.post('api/user/delUser', {
+        username2: name2,
+        age2: age2
+      }, {}).then((response) => {
+        console.log(response)
+      })
+    },
+    compareUser () {
+      var name3 = this.username3
+      this.$http.get('api/user/compareuser', {
+        username3: name3}, {}).then((response) => {
+        console.log(response)
+      })
     }
   }
 }

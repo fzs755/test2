@@ -22,7 +22,7 @@ conn.query(sql, function (err, result) {
   console.log(result)
   console.log('...................\n\n')
 }) */
-/* var jsonWrite = function (res, ret) {
+var jsonWrite = function (res, ret) {
   if (typeof ret === 'undefined') {
     res.json({
       code: '1',
@@ -31,10 +31,10 @@ conn.query(sql, function (err, result) {
   } else {
     res.json(ret)
   }
-} */
+}
 
 router.post('/addUser', (req, res) => {
-  var addsql = 'insert into user(name,age) values(?,?)'
+  var addsql = 'insert into `user`(name,age) values(?,?)'
   var params = req.body
   conn.query(addsql, [params.username, params.age], function (err, result) {
     if (err) {
@@ -49,17 +49,46 @@ router.post('/addUser', (req, res) => {
     }
   })
 })
-router.post('/delUser', (req, res) => {
-  var delsql = 'delete from user "where name=? and age=?"'
+router.post('/changeUser', (req, res) => {
   var params = req.body
-  conn.query(delsql, [params.username, params.age], function (err, result) {
+  var changesql = 'update user set age=? where name=?'
+  conn.query(changesql, [params.age1, params.username1], function (err, result) {
     if (err) {
       console.log('[insert error-', err.message)
       return
     }
     if (result) {
       console.log('............select..........')
-      console.log('delete:', result)
+      console.log('change:', result)
+    }
+  })
+})
+router.post('/delUser', (req, res) => {
+  var params = req.body
+  var delsql = 'delete from user where name=? and age=?'
+  conn.query(delsql, [params.username2, params.age2], function (err, result) {
+    if (err) {
+      console.log('[insert error-', err.message)
+      return
+    }
+    if (result) {
+      console.log('............select..........')
+      console.log('del:', result)
+    }
+  })
+})
+router.get('/compareUser', (req, res) => {
+  var params = req.body
+  var comparesql = 'select * from user where name=?'
+  conn.query(comparesql, [params.username3], function (err, result) {
+    if (err) {
+      console.log('could not find the user')
+      return
+    }
+    if (result) {
+      console.log('............select..........')
+      console.log('find:', result)
+      jsonWrite(res, result)
     }
   })
 })
